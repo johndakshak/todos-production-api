@@ -1,12 +1,12 @@
 # Deployment Guide for Render
 
-This guide will help you deploy the Farm Connect API to Render.
+This guide will help you deploy the Todos API to Render.
 
 ## Prerequisites
 
 - A Render account (free tier available)
 - Git repository with your code
-- PostgreSQL or MySQL database credentials
+- PostgreSQL database credentials
 
 ## Deployment Steps
 
@@ -23,27 +23,34 @@ git push origin main
 ### 2. Create a New Web Service on Render
 
 1. Log in to [Render](https://render.com)
-2. Click **New +** and select **Web Service**
+2. Click **New +** and select **Blueprint**
 3. Connect your Git repository
 4. Render will automatically detect the `render.yaml` file and configure the service
-5. Click **Create Web Service**
+5. Click **Deploy Blueprint**
 
 ### 3. Database Setup
 
-The `render.yaml` file will automatically create a PostgreSQL database named `farm-connect-db` on Render's free tier.
+The `render.yaml` file will automatically create a PostgreSQL database named `todos-db` on Render's free tier.
 
-If you prefer to use MySQL instead:
-- Change `DB_CONNECTION` to `mysql` in render.yaml
-- Note: MySQL is not available on Render's free tier
+> **Note:** MySQL is not available on Render's free tier. Use PostgreSQL (already configured).
 
 ### 4. Environment Variables
 
-The following environment variables are automatically configured by render.yaml:
+The following environment variables are automatically configured by `render.yaml`:
 
-- `DB_CONNECTION`: Set to `postgresql` (or `mysql` if using MySQL)
-- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`: Auto-populated from database
+- `DB_CONNECTION`: Set to `postgresql`
+- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`: Auto-populated from the database
 - `SECRET_KEY`: Auto-generated secure key
-- `FRONTEND_URL`: Update this to your frontend URL
+- `FRONTEND_URL`: Update this to your frontend URL when ready
+
+The following must be added **manually** in the Render dashboard (Environment tab) after deploying:
+
+- `JWT_SECRET_KEY`: Your JWT secret key
+- `JWT_ALGORITHM`: e.g. `HS256`
+- `JWT_EXPIRATION_TIME`: e.g. `3600`
+- `CLOUDINARY_CLOUD_NAME`: Your Cloudinary cloud name
+- `CLOUDINARY_API_KEY`: Your Cloudinary API key
+- `CLOUDINARY_API_SECRET`: Your Cloudinary API secret
 
 ### 5. Manual Environment Variables (if not using render.yaml)
 
@@ -58,6 +65,12 @@ DB_PASSWORD=your-database-password
 DB_DATABASE=todos
 SECRET_KEY=your-secret-key-here
 FRONTEND_URL=https://your-frontend-url.com
+JWT_SECRET_KEY=your-jwt-secret-key
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_TIME=3600
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
 ```
 
 ### 6. Run Database Migrations
@@ -77,23 +90,23 @@ alembic upgrade head
 
 Once the deployment is complete:
 - Check the deployment logs for any errors
-- Visit your API URL (e.g., `https://farm-connect-api.onrender.com/home`)
+- Visit your API URL (e.g., `https://todos-api.onrender.com/home`)
 - You should see: `{"status":"success","message":"What's everyone working on today?"}`
 
 ## Important Notes
 
 ### Database Choice
-- **PostgreSQL**: Available on Render's free tier (recommended)
-- **MySQL**: Not available on free tier, requires paid plan
+- **PostgreSQL**: Available on Render's free tier (recommended and configured)
+- **MySQL**: Not available on free tier, requires a paid plan
 
 ### CORS Configuration
-Update the `FRONTEND_URL` environment variable to match your frontend domain to allow CORS requests.
+Update the `FRONTEND_URL` environment variable to match your frontend domain to allow CORS requests. You can use `http://localhost:3000` as a placeholder during development and update it later from the Render dashboard.
 
 ### Static Files
-The application serves static files from `/static` endpoint. Ensure your static files are in the `app/static` directory.
+The application serves static files from the `/static` endpoint. Ensure your static files are in the `app/static` directory. Note that Render's filesystem is ephemeral — use Cloudinary for persistent file/image storage.
 
 ### Cloudinary
-If you're using Cloudinary for image uploads, ensure you add the following environment variables:
+Add the following environment variables in the Render dashboard for image uploads to work:
 - `CLOUDINARY_CLOUD_NAME`
 - `CLOUDINARY_API_KEY`
 - `CLOUDINARY_API_SECRET`
@@ -113,7 +126,7 @@ If you're using Cloudinary for image uploads, ensure you add the following envir
 ### Application Not Starting
 - Check the deployment logs in Render
 - Verify the Dockerfile is correct
-- Ensure all dependencies are in requirements.txt
+- Ensure all dependencies are in `requirements.txt` (especially `psycopg2-binary`)
 
 ## Local Development with PostgreSQL
 
@@ -121,6 +134,7 @@ To test locally with PostgreSQL before deploying:
 
 1. Install PostgreSQL locally
 2. Update your `.env` file:
+
 ```
 DB_CONNECTION=postgresql
 DB_HOST=localhost
@@ -131,12 +145,14 @@ DB_DATABASE=todos
 ```
 
 3. Run migrations:
+
 ```bash
 cd app
 alembic upgrade head
 ```
 
 4. Start the application:
+
 ```bash
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```

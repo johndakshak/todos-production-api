@@ -1,40 +1,35 @@
 services:
   - type: web
-    name: farm-connect-api
+    name: todos-api        # was: farm-connect-api
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
     envVars:
-      - key: DB_CONNECTION
-        value: postgresql
       - key: DB_HOST
         fromDatabase:
-          name: farm-connect-db
+          name: todos-db   # was: farm-connect-db
           property: host
       - key: DB_PORT
         fromDatabase:
-          name: farm-connect-db
+          name: todos-db   # was: farm-connect-db
           property: port
       - key: DB_USER
         fromDatabase:
-          name: farm-connect-db
+          name: todos-db   # was: farm-connect-db
           property: user
       - key: DB_PASSWORD
         fromDatabase:
-          name: farm-connect-db
+          name: todos-db   # was: farm-connect-db
           property: password
       - key: DB_DATABASE
         fromDatabase:
-          name: farm-connect-db
+          name: todos-db   # was: farm-connect-db
           property: database
-      - key: SECRET_KEY
-        generateValue: true
-      - key: FRONTEND_URL
-        value: http://localhost:3000
+      # ... rest of your env vars
 
 databases:
-  - name: farm-connect-db
+  - name: todos-db         # was: farm-connect-db
     databaseName: todos
     user: todos_user
     plan: free
