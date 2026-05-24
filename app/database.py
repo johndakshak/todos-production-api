@@ -7,8 +7,9 @@ DB_PORT = os.getenv('DB_PORT')
 DB_HOST = os.getenv('DB_HOST')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_DATABASE = os.getenv('DB_DATABASE')
+DB_CONNECTION = os.getenv('DB_CONNECTION', 'postgresql')
 
-SQLALCHEMY_DB_URL = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
+SQLALCHEMY_DB_URL = f'{DB_CONNECTION}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
 
 engine = create_engine(SQLALCHEMY_DB_URL, echo=True)
 
@@ -20,9 +21,7 @@ Session = sessionmaker(
 
 def get_db():
     db = Session()
-
     try:
         yield db
     finally:
         db.close()
-

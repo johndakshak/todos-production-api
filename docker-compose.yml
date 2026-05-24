@@ -7,6 +7,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - DB_CONNECTION=${DB_CONNECTION}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
@@ -27,7 +28,6 @@ services:
       - ./app/static/uploads:/app/app/static/uploads
     depends_on:
       - todos_db
-        # condition: service_healthy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -38,25 +38,22 @@ services:
 
   todos_db:
     container_name: todos_db
-    image: mysql:8.0
+    image: postgres:15
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_DATABASE=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
     ports:
-      - '${FORWARD_DB_PORT}:3306'
+      - '${FORWARD_DB_PORT:-5432}:5432'
     volumes:
-      - todos_db_data:/var/lib/mysql
+      - todos_db_data:/var/lib/postgresql/data
     restart: unless-stopped
-    command: 
-      - --default-authentication-plugin=mysql_native_password
-      - --innodb_buffer_pool_size=256M
-      - --innodb_log_file_size=128M
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${DB_PASSWORD} || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 40s
-   
+
 volumes:
   todos_db_data:
