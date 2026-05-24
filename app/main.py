@@ -30,7 +30,7 @@ app.include_router(cloudinary_routes.router)
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key=os.getenv,
+    secret_key=os.getenv("SECRET_KEY"), 
     https_only=False,
 )
 
@@ -40,15 +40,14 @@ origins = [
     "http://localhost:5500",
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins, #allow specific origin
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
+origins = [
+    os.getenv("FRONTEND_URL", "http://localhost:3000"),
+    "http://localhost:8000",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+]
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get('/home')
 def home():
     return {

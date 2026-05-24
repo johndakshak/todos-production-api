@@ -1,7 +1,26 @@
-### login mysql in your container
-```docker
-docker exec -it <name_of_db_container> mysql -u <user_db> -p
+# Connect to PostgreSQL in your container
+
+```bash
+sudo docker exec -it todos_db psql -U todos_user -d todos
+```
 
 e.g.
-docker exec -it blogapp_db mysql -u root -p
+```bash
+sudo docker exec -it todos_db psql -U todos_user -d todos
+```
+
+Once inside, useful commands:
+
+```sql
+-- list all tables
+\dt
+
+-- see users table
+SELECT * FROM users;
+
+-- see todos table
+SELECT * FROM todos;
+
+-- exit
+\q
 ```

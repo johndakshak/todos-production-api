@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: todos-api        # was: farm-connect-api
+    name: todos-api        
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
@@ -8,28 +8,28 @@ services:
     envVars:
       - key: DB_HOST
         fromDatabase:
-          name: todos-db   # was: farm-connect-db
+          name: todos-db   
           property: host
       - key: DB_PORT
         fromDatabase:
-          name: todos-db   # was: farm-connect-db
+          name: todos-db   
           property: port
       - key: DB_USER
         fromDatabase:
-          name: todos-db   # was: farm-connect-db
+          name: todos-db   
           property: user
       - key: DB_PASSWORD
         fromDatabase:
-          name: todos-db   # was: farm-connect-db
+          name: todos-db   
           property: password
       - key: DB_DATABASE
         fromDatabase:
-          name: todos-db   # was: farm-connect-db
+          name: todos-db   
           property: database
-      # ... rest of your env vars
+      
 
 databases:
-  - name: todos-db         # was: farm-connect-db
+  - name: todos-db         
     databaseName: todos
     user: todos_user
     plan: free
