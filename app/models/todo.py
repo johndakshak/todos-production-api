@@ -11,7 +11,7 @@ class Todo(Base):
     description = Column(String(500), nullable=False)
     is_public = Column(Boolean, nullable=False, default=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=True)
-    status = Column(Enum(TodoStatus), nullable=False, default=TodoStatus.pending.value, server_default="pending")
+    status = Column(Enum(TodoStatus, name='todostatus', create_type=False), nullable=False, default=TodoStatus.pending.value, server_default="pending")
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
