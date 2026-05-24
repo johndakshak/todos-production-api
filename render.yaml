@@ -31,7 +31,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: FRONTEND_URL
-        value: https://your-frontend-url.com
+        value: http://localhost:3000
 
 databases:
   - name: farm-connect-db

@@ -30,7 +30,7 @@ app.include_router(cloudinary_routes.router)
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key=os.getenv("SECRET_KEY", "default-secret-key-change-in-production"),
+    secret_key=os.getenv,
     https_only=False,
 )
 
@@ -38,7 +38,6 @@ origins = [
     "http://localhost:8000",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    os.getenv("FRONTEND_URL", ""),
 ]
 
 app.add_middleware(
