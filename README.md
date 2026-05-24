@@ -1,0 +1,7 @@
+### login mysql in your container
+```docker
+docker exec -it <name_of_db_container> mysql -u <user_db> -p
+
+e.g.
+docker exec -it blogapp_db mysql -u root -p
+```
