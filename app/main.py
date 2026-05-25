@@ -48,7 +48,7 @@ origins = [
 ]
 
 app.mount("/static", StaticFiles(directory="/app/static"), name="static")
-@app.get('/home')
+@app.get('/')
 def home():
     return {
         "status": "success",
