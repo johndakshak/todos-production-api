@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
 from app.schema.users_schema import UserCreate, UserResponse, UserUpdate
-from security import hash_password
+from app.security import hash_password
 
 from app.middleware.auth import JWTBearer
 from app.middleware.auth import authMiddleware

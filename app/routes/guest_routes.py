@@ -19,9 +19,9 @@ def create_guest_todo(todo: GuestTodoCreate, db: Session = Depends(get_db)):
     new_todo = Todo(
         description=todo.description,
         is_public=todo.is_public,
-        user_id=None,  # Guest todos have no user
+        user_id=None,  
         guest_name=todo.guest_name,
-        status=TodoStatus.PENDING
+        status=TodoStatus.pending
     )
     
     db.add(new_todo)

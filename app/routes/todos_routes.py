@@ -117,7 +117,7 @@ def mark_todo_completed(todo_id: int, db: Session = Depends(get_db), current_use
     if todo.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Access denied: Not your todo")
     
-    todo.status = TodoStatus.COMPLETED
+    todo.status = TodoStatus.completed
     
     db.commit()
     db.refresh(todo)
