@@ -1,12 +1,12 @@
 from cloudinary.uploader import upload
-from config.cloudinary import cloudinary
-from middleware.auth import User, get_current_user
+from app.config.cloudinary import cloudinary
+from app.middleware.auth import User, get_current_user
 from fastapi import APIRouter, HTTPException, status, UploadFile, Depends
 from typing import List
-from config.cloudinary import upload_image
-from middleware.auth import authMiddleware
+from app.config.cloudinary import upload_image
+from app.middleware.auth import authMiddleware
 from sqlalchemy.orm import Session
-from database import get_db
+from app.database import get_db
 
 router = APIRouter(prefix="/cloudinary", tags=["Cloudinary"])
 

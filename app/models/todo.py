@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum, ForeignKey, func
-from models.base import Base
+from app.models.base import Base
 from sqlalchemy.orm import relationship
-from enums import TodoStatus
+from app.enums import TodoStatus
 
 class Todo(Base):
     __tablename__ = 'todos'
