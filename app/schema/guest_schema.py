@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
-from app.enums import TodoStatus
+from enums import TodoStatus
 
 class GuestTodoCreate(BaseModel):
     description: str = Field(min_length=1, max_length=500)

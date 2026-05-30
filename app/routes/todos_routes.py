@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models.todo import Todo
-from app.models.user import User
-from app.schema.todo_schema import TodoCreate, TodoResponse, TodoUpdate
-from app.middleware.auth import JWTBearer
+from database import get_db
+from models.todo import Todo
+from models.user import User
+from schema.todo_schema import TodoCreate, TodoResponse, TodoUpdate
+from middleware.auth import JWTBearer
 from typing import Optional
-from app.enums import TodoStatus
+from enums import TodoStatus
 
 router = APIRouter(prefix="/todos", tags=["Todos"])
 

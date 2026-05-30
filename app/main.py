@@ -1,14 +1,14 @@
 import logging
 from fastapi import FastAPI
-from app.models.base import Base
-from app.models.user import User
-from app.models.todo import Todo
-from app.database import engine
-from app.routes import users_routes
-from app.routes import auth_route
-from app.routes import cloudinary_routes
-from app.routes import todos_routes
-from app.routes import guest_routes
+from models.base import Base
+from models.user import User
+from models.todo import Todo
+from database import engine
+from routes import users_routes
+from routes import auth_route
+from routes import cloudinary_routes
+from routes import todos_routes
+from routes import guest_routes
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 import os
