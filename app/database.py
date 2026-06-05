@@ -9,7 +9,9 @@ DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_DATABASE = os.getenv('DB_DATABASE')
 DB_CONNECTION = os.getenv('DB_CONNECTION', 'postgresql')
 
-SQLALCHEMY_DB_URL = f'{DB_CONNECTION}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
+# SQLALCHEMY_DB_URL = f'{DB_CONNECTION}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
+SQLALCHEMY_DB_URL = f'postgresql://postgres.kxxalvotibavtndxgnsv:N!ga7GL,s+Y-6Vd@aws-1-eu-central-1.pooler.supabase.com:5432/postgres'
+print(SQLALCHEMY_DB_URL)
 
 engine = create_engine(SQLALCHEMY_DB_URL, echo=True)
 
